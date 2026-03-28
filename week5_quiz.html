@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSE203 Week 5 Practice Exam</title>
+<style>
+  :root {
+    --bg: #f8f8f6; --card: #ffffff; --border: #e5e4df;
+    --text: #1a1a18; --muted: #6b6b66; --hint: #9b9b96;
+    --green-bg: #e1f5ee; --green-text: #085041; --green-bd: #5dcaa5;
+    --blue-bg: #e6f1fb; --blue-text: #185fa5; --blue-bd: #378add;
+    --amber-bg: #faeeda; --amber-text: #854f0b; --amber-bd: #ef9f27;
+    --purple-bg: #eeedfe; --purple-text: #534ab7; --purple-bd: #7f77dd;
+    --coral-bg: #faece7; --coral-text: #993c1d; --coral-bd: #d85a30;
+    --red-bg: #fcebeb; --red-text: #501313; --red-bd: #e24b4a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.6; }
+  .wrap { max-width: 740px; margin: 0 auto; padding: 32px 16px 48px; }
+  h1 { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+  .sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+
+  .filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 24px; }
+  .filter-btn { padding: 4px 12px; border-radius: 20px; font-size: 12px;
+    border: 1px solid var(--border); background: var(--card);
+    color: var(--muted); cursor: pointer; }
+  .filter-btn.active { background: var(--text); color: #fff; border-color: var(--text); }
+
+  .card { background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; margin-bottom: 14px; overflow: hidden; }
+  .card-head { padding: 16px 18px; }
+  .meta { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+  .qnum { font-size: 12px; color: var(--hint); margin-right: 2px; }
+  .badge { display: inline-block; font-size: 11px; font-weight: 500;
+    padding: 2px 9px; border-radius: 20px; }
+  .topic { font-size: 11px; padding: 2px 8px; border-radius: 20px;
+    background: var(--bg); color: var(--muted); border: 1px solid var(--border); }
+  .qtext { font-size: 14px; line-height: 1.65; white-space: pre-line; }
+
+  .options { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+  .opt { text-align: left; padding: 7px 12px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--card);
+    color: var(--text); cursor: pointer; font-size: 13px;
+    font-family: inherit; transition: background .15s; }
+  .opt:hover { background: var(--bg); }
+  .opt.correct { background: var(--green-bg); border-color: var(--green-bd); color: var(--green-text); }
+  .opt.wrong   { background: var(--red-bg);   border-color: var(--red-bd);   color: var(--red-text); }
+  .opt.selected { background: var(--blue-bg); border-color: var(--blue-bd); }
+
+  .reveal-btn { margin-top: 12px; padding: 6px 14px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--card);
+    color: var(--muted); cursor: pointer; font-size: 13px; font-family: inherit; }
+  .reveal-btn:hover { background: var(--bg); }
+
+  .answer-box { padding: 14px 18px; border-top: 1px solid var(--border); display: none; }
+  .answer-box.show { display: block; }
+  .ans-label { padding: 7px 12px; border-radius: 8px; margin-bottom: 10px;
+    background: var(--green-bg); border: 1px solid var(--green-bd); }
+  .ans-label span:first-child { font-size: 12px; font-weight: 600; color: var(--green-text); }
+  .ans-label span:last-child  { font-size: 13px; font-weight: 600; color: var(--green-text); }
+  .explanation { font-size: 13px; line-height: 1.8; white-space: pre-line; color: var(--muted); }
+
+  .footer { text-align: center; font-size: 12px; color: var(--hint); margin-top: 8px; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>CSE203 Week 5 – Practice Exam</h1>
+  <p class="sub">Linked List · Tree · Binary Tree · Traversal &nbsp;|&nbsp; 20 questions</p>
+
+  <div class="filters" id="filters"></div>
+  <div id="qlist"></div>
+  <p class="footer" id="footer"></p>
+</div>
+
+<script>
+const BADGE = {
+  "True/False":         { bg:"#e1f5ee", text:"#085041", bd:"#5dcaa5" },
+  "Multiple Choice":    { bg:"#e6f1fb", text:"#185fa5", bd:"#378add" },
+  "Fill-in-the-blank":  { bg:"#faeeda", text:"#854f0b", bd:"#ef9f27" },
+  "Programming":        { bg:"#eeedfe", text:"#534ab7", bd:"#7f77dd" },
+  "Draw":               { bg:"#faece7", text:"#993c1d", bd:"#d85a30" },
+};
+
+const QS = [
+  { id:1, type:"True/False", topic:"Singly Linked List",
+    q:"In a singly linked list, removing an element at the tail can be done in O(1) time if we maintain a tail pointer.",
+    ans:"False",
+    exp:"단방향 연결 리스트(singly linked list)에서는 tail 포인터를 유지하더라도 tail 제거가 O(1)이 아닙니다.\ntail을 제거한 후, 새로운 tail(이전 노드)을 알려면 처음부터 순회해야 하므로 O(n)이 필요합니다.\n→ tail 제거를 O(1)로 하려면 이중 연결 리스트(doubly linked list)가 필요합니다." },
+
+  { id:2, type:"True/False", topic:"Linked List vs Array",
+    q:"In a singly linked list, accessing the element at index k (i.e., the k-th node) takes O(1) time.",
+    ans:"False",
+    exp:"연결 리스트(linked list)는 배열처럼 연속된 메모리를 사용하지 않으므로 인덱스로 직접 접근이 불가합니다.\nk번째 노드에 접근하려면 head부터 k번 next 포인터를 따라가야 하므로 Θ(k) = O(n) 시간이 걸립니다.\n반면 배열(array)과 동적 배열(dynamic array)은 O(1) 인덱싱이 가능합니다." },
+
+  { id:3, type:"Multiple Choice", topic:"Linked List Operations",
+    q:"Which of the following operations is O(1) in a singly linked list with both head and tail pointers?",
+    opts:[
+      "Inserting at the tail",
+      "Removing at the tail",
+      "Accessing the k-th element",
+      "Searching for a value"
+    ], ans:"Inserting at the tail",
+    exp:"head·tail 포인터를 모두 유지하는 단방향 연결 리스트에서:\n• 삽입(insert) at tail: 새 노드 생성 → tail.next = new node → tail 업데이트 → O(1) ✓\n• 삭제(remove) at tail: 이전 노드를 알아야 하므로 O(n)\n• k번째 접근: head부터 순회 → O(n)\n• 탐색(search): 순차 탐색 → O(n)" },
+
+  { id:4, type:"Fill-in-the-blank", topic:"Node Class",
+    q:"Complete the Python Node class for a singly linked list:\n\nclass Node:\n    __slots__ = '_element', '_next'\n    def __init__(self, element, nxt):\n        self._element = ___\n        self._next = ___",
+    ans:"self._element = element\nself._next = nxt",
+    exp:"__slots__는 해당 인스턴스에 허용되는 속성명을 고정하여 메모리를 절약합니다(딕셔너리 대신 고정 배열 사용).\n• self._element = element : 사용자 데이터(element)를 노드에 저장\n• self._next = nxt : 다음 노드(next node)를 가리키는 참조(reference) 저장\nnxt가 None이면 해당 노드가 리스트의 마지막입니다." },
+
+  { id:5, type:"Programming", topic:"LinkedStack",
+    q:"In the LinkedStack implementation, what does the push(e) method do step by step?\n\ndef push(self, e):\n    self._head = self._Node(e, self._head)\n    self._size += 1",
+    ans:"새 Node(e, 현재 head)를 생성하여 head로 설정 → size 증가",
+    exp:"push(e) 동작 분석:\n1. self._Node(e, self._head) : 새 노드를 생성하고, 그 next를 현재 head로 설정\n2. self._head = (새 노드) : head를 새 노드로 업데이트\n3. self._size += 1 : 크기 증가\n\n이렇게 하면 새 원소가 리스트의 맨 앞(head)에 삽입되며, 이 노드가 스택의 top이 됩니다.\n시간복잡도: O(1)" },
+
+  { id:6, type:"Multiple Choice", topic:"LinkedStack vs ArrayStack",
+    q:"Compared to ArrayStack, which is an advantage of LinkedStack?",
+    opts:[
+      "O(1) worst-case time for every push/pop (no resizing)",
+      "Better cache performance due to contiguous memory",
+      "Lower memory overhead per element",
+      "Supports O(1) random access by index"
+    ], ans:"O(1) worst-case time for every push/pop (no resizing)",
+    exp:"LinkedStack의 장점:\n• push/pop이 항상 worst-case O(1) → 배열 리사이징(resizing)이 없으므로 지연(latency spike)이 없음\n\nArrayStack의 장점:\n• 메모리 지역성(cache locality)이 좋아 실제로 더 빠를 때 많음\n• 원소당 오버헤드(overhead)가 적음 (next 포인터 불필요)\n\nLinkedStack에서 각 노드는 element + next 포인터를 저장하므로 메모리 오버헤드가 더 큼." },
+
+  { id:7, type:"True/False", topic:"Queue as Linked List",
+    q:"In a LinkedQueue, enqueue() adds a new node at the head, and dequeue() removes from the tail.",
+    ans:"False",
+    exp:"LinkedQueue는 FIFO(First In First Out) 구조입니다.\n• enqueue(e): rear(tail)에 새 노드 추가 → O(1)\n• dequeue(): front(head)에서 노드 제거 → O(1)\n\n만약 head에 추가하고 tail에서 제거한다면:\n• tail 제거는 단방향 연결 리스트에서 O(n)이 되어 비효율적입니다.\n따라서 올바른 방향은 enqueue→tail, dequeue→head입니다." },
+
+  { id:8, type:"Draw", topic:"LinkedQueue Operations",
+    q:"Given an empty LinkedQueue, execute in order and describe the final state (front → rear):\nenqueue(1) → enqueue(2) → dequeue() → enqueue(3) → enqueue(4) → dequeue()",
+    ans:"front → [3] → [4] → rear",
+    exp:"단계별 추적 (head=front, tail=rear):\n1. enqueue(1) → [1]  (head=tail=Node(1))\n2. enqueue(2) → [1] → [2]  (tail=Node(2))\n3. dequeue() → 1 제거 → [2]  (head=Node(2))\n4. enqueue(3) → [2] → [3]\n5. enqueue(4) → [2] → [3] → [4]\n6. dequeue() → 2 제거 → [3] → [4]\n최종: front=3, rear=4" },
+
+  { id:9, type:"Multiple Choice", topic:"Linked List Variants",
+    q:"Which linked list variant allows O(1) removal at both head AND tail?",
+    opts:[
+      "Singly linked list with tail pointer",
+      "Doubly linked list with head and tail pointers",
+      "Circular singly linked list",
+      "Array-based list"
+    ], ans:"Doubly linked list with head and tail pointers",
+    exp:"이중 연결 리스트(doubly linked list)에서 각 노드는 prev·next 두 포인터를 가집니다.\n• head 제거: head = head.next; head.prev = None → O(1)\n• tail 제거: tail = tail.prev; tail.next = None → O(1) ← prev 덕분에 가능!\n\n단방향(singly)에서는 tail 제거 시 이전 노드를 모르므로 O(n).\n원형(circular) 단방향도 tail 제거에는 O(n)이 필요합니다." },
+
+  { id:10, type:"True/False", topic:"Tree Terminology",
+    q:"In a tree, the depth of the root node is 1.",
+    ans:"False",
+    exp:"트리(tree)에서 루트(root)의 깊이(depth)는 0으로 정의합니다.\n깊이(depth)는 해당 노드의 조상(ancestor) 수이며, 루트는 조상이 없으므로 depth=0.\n높이(height)와 혼동하지 마세요:\n• depth of node v = 루트부터 v까지의 에지(edge) 수\n• height of tree = 가장 깊은 리프(leaf)의 깊이" },
+
+  { id:11, type:"Fill-in-the-blank", topic:"Tree Properties",
+    q:"In a proper binary tree (진정한 이진 트리) with e external nodes and i internal nodes:\ne = ___ and n (total nodes) = ___",
+    ans:"e = i + 1\nn = 2e - 1 (또는 2i + 1)",
+    exp:"Proper binary tree(완전 이진 트리 아님, 각 내부 노드가 정확히 2개 자식)의 성질:\n• e = i + 1  →  외부 노드(잎) 수 = 내부 노드 수 + 1\n• n = e + i = (i+1) + i = 2i + 1 = 2e - 1\n\n증명 아이디어: 에지(edge)의 수 = n - 1. 각 내부 노드는 정확히 2개의 에지를 자식에게 주므로 에지 수 = 2i. 따라서 2i = n - 1 = e + i - 1 → e = i + 1." },
+
+  { id:12, type:"Multiple Choice", topic:"Tree Traversal",
+    q:"For the tree below, what is the preorder traversal result?\n      A\n     / \\\n    B   C\n   / \\   \\\n  D   E   F",
+    opts:[
+      "A, B, D, E, C, F",
+      "D, B, E, A, C, F",
+      "D, E, B, F, C, A",
+      "A, C, F, B, E, D"
+    ], ans:"A, B, D, E, C, F",
+    exp:"전위 순회(preorder traversal): 현재 노드 방문 → 왼쪽 서브트리 → 오른쪽 서브트리\n\n순서:\n1. A 방문\n2. B의 서브트리: B → D → E\n3. C의 서브트리: C → F\n\n결과: A, B, D, E, C, F\n\n비교:\n• 중위(inorder): D, B, E, A, C, F\n• 후위(postorder): D, E, B, F, C, A" },
+
+  { id:13, type:"Multiple Choice", topic:"Tree Traversal",
+    q:"For the same tree (A at root, B and C as children of A, D and E as children of B, F as child of C), what is the postorder traversal?",
+    opts:[
+      "A, B, D, E, C, F",
+      "D, B, E, A, C, F",
+      "D, E, B, F, C, A",
+      "F, C, D, E, B, A"
+    ], ans:"D, E, B, F, C, A",
+    exp:"후위 순회(postorder traversal): 왼쪽 서브트리 → 오른쪽 서브트리 → 현재 노드 방문\n\n순서:\n1. B의 왼쪽: D\n2. B의 오른쪽: E\n3. B 방문\n4. C의 오른쪽: F\n5. C 방문\n6. A 방문\n\n결과: D, E, B, F, C, A\n\n응용: 디렉토리 용량 계산(자식 합산 후 부모 처리), 후위 표기식(postfix expression) 평가" },
+
+  { id:14, type:"True/False", topic:"Binary Tree",
+    q:"In a binary tree, an internal node can have exactly one child.",
+    ans:"True",
+    exp:"이진 트리(binary tree)에서 내부 노드(internal node)는 최대 2개의 자식을 가질 수 있습니다: 0개(리프), 1개, 또는 2개.\n\n단, proper(완전한) binary tree에서는 내부 노드가 정확히 2개의 자식을 가져야 합니다.\n\n일반 binary tree와 proper binary tree를 구분하세요:\n• Binary tree: 각 노드의 자식 ≤ 2\n• Proper binary tree: 각 내부 노드의 자식 = 2" },
+
+  { id:15, type:"Programming", topic:"Inorder Traversal",
+    q:"Write the inorder traversal algorithm for a binary tree:\n\nAlgorithm inOrder(v):\n    if v has a left child:\n        ___\n    visit(v)\n    if v has a right child:\n        ___",
+    ans:"inOrder(left(v))\ninOrder(right(v))",
+    exp:"중위 순회(inorder traversal): 왼쪽 서브트리 → 현재 노드 → 오른쪽 서브트리\n\n완성된 알고리즘:\n  if v has a left child:\n      inOrder(left(v))   ← 재귀적으로 왼쪽 서브트리 순회\n  visit(v)               ← 현재 노드 방문\n  if v has a right child:\n      inOrder(right(v))  ← 재귀적으로 오른쪽 서브트리 순회\n\n응용: 이진 탐색 트리(BST)에서 inorder traversal → 오름차순 출력\n      이진 트리 시각화(x좌표 = inorder rank)" },
+
+  { id:16, type:"Fill-in-the-blank", topic:"Array Representation of Binary Tree",
+    q:"In the array-based representation of a binary tree:\n• rank(root) = ___\n• rank(left child of node with rank p) = ___\n• rank(right child of node with rank p) = ___",
+    ans:"rank(root) = 1\nrank(left child) = 2 × p\nrank(right child) = 2 × p + 1",
+    exp:"배열 기반 이진 트리(array-based binary tree) 인덱싱 규칙:\n• 루트는 인덱스 1에 저장 (0은 사용 안 함)\n• 왼쪽 자식(left child)의 rank = 2 × rank(parent)\n• 오른쪽 자식(right child)의 rank = 2 × rank(parent) + 1\n• 부모(parent)의 rank = rank(child) // 2\n\n예: 루트(rank=1)의 왼쪽 자식=rank 2, 오른쪽=rank 3\n    rank 2의 왼쪽=rank 4, 오른쪽=rank 5\n\n단점: 편향 트리(skewed tree)에서는 O(2^n) 크기의 배열이 필요 → 낭비" },
+
+  { id:17, type:"Draw", topic:"Arithmetic Expression Tree",
+    q:"Draw the arithmetic expression tree for: (3 + 1) * (9 - 2 * 4)\nThen write its inorder traversal result.",
+    ans:"Inorder: ( ( 3 + 1 ) * ( 9 - ( 2 * 4 ) ) )\nRoot=*, left subtree=(3+1), right subtree=(9-(2*4))",
+    exp:"산술 표현식 트리(arithmetic expression tree) 구조:\n         *\n        / \\\n       +   -\n      / \\ / \\\n     3  1 9   *\n             / \\\n            2   4\n\n중위 순회(inorder) 결과 (괄호 포함):\n((3 + 1) * (9 - (2 * 4)))\n\n• 내부 노드(internal node): 연산자(operator)\n• 외부 노드/리프(external node/leaf): 피연산자(operand)\n후위 순회로 평가: 3 1 + 2 4 * - 9 * ... 잠깐, postorder: 3 1 + 9 2 4 * - *" },
+
+  { id:18, type:"True/False", topic:"Tree Height",
+    q:"The _height1 algorithm (which calls is_leaf and depth for every node) runs in O(n) time.",
+    ans:"False",
+    exp:"_height1은 O(n²)입니다.\n\n이유:\n• positions()로 모든 노드를 순회 → O(n)\n• 각 리프(leaf) 노드에 대해 depth() 계산 → 최악의 경우 O(n)\n• 전체: O(n) × O(n) = O(n²)\n\n최악의 경우(worst case): 사슬(chain) 형태의 트리\n  A → B → C → D → ... (각 노드가 자식 1개)\n  → 가장 깊은 리프의 depth = n-1\n\n반면 _height2는 재귀적으로 한 번만 순회 → O(n)" },
+
+  { id:19, type:"Multiple Choice", topic:"Linked Structure for Trees",
+    q:"In a linked structure for a general tree (not binary), each node stores:",
+    opts:[
+      "element, parent reference, left/right child references",
+      "element, parent reference, a sequence of children references",
+      "element, next reference, prev reference",
+      "element, rank, array of all descendants"
+    ], ans:"element, parent reference, a sequence of children references",
+    exp:"일반 트리(general tree)의 연결 구조(linked structure)에서 각 노드는:\n• element: 노드에 저장된 데이터\n• parent: 부모 노드 참조\n• children: 자식 노드들의 시퀀스(sequence, 리스트 등)\n\n이진 트리(binary tree)는 자식이 최대 2개이므로 left·right 포인터로 충분하지만,\n일반 트리는 자식 수가 가변적(variable)이므로 시퀀스로 저장합니다.\n\n노드 객체는 Position ADT를 구현합니다." },
+
+  { id:20, type:"Programming", topic:"Evaluate Expression Tree",
+    q:"Complete the evalExpr algorithm for evaluating an arithmetic expression tree:\n\nAlgorithm evalExpr(v):\n    if is_leaf(v):\n        return ___\n    else:\n        x = evalExpr(___)\n        y = evalExpr(___)\n        ○ = operator stored at v\n        return ___",
+    ans:"return v.element()\nx = evalExpr(left(v))\ny = evalExpr(right(v))\nreturn x ○ y",
+    exp:"산술 표현식 트리 평가(evaluate arithmetic expression tree) - 후위 순회 특화:\n\nAlgorithm evalExpr(v):\n  if is_leaf(v):                     ← 리프 = 피연산자(operand)\n      return v.element()             ← 숫자 반환\n  else:                              ← 내부 노드 = 연산자(operator)\n      x = evalExpr(left(v))          ← 왼쪽 서브트리 먼저 평가\n      y = evalExpr(right(v))         ← 오른쪽 서브트리 평가\n      ○ = operator at v\n      return x ○ y                   ← 연산 결과 반환\n\n예: (+, left=3, right=4) → evalExpr(left)=3, evalExpr(right)=4 → 3+4=7\n시간복잡도: O(n) (각 노드를 정확히 1번 방문)" },
+];
+
+const types = ["All", ...Object.keys(BADGE)];
+let activeType = "All";
+let selected = {};
+let revealed = {};
+
+function render() {
+  const filtered = activeType === "All" ? QS : QS.filter(q => q.type === activeType);
+  document.getElementById("footer").textContent = `총 ${filtered.length}문제`;
+
+  const fEl = document.getElementById("filters");
+  fEl.innerHTML = "";
+  types.forEach(t => {
+    const b = document.createElement("button");
+    b.className = "filter-btn" + (activeType === t ? " active" : "");
+    b.textContent = t;
+    b.onclick = () => { activeType = t; render(); };
+    fEl.appendChild(b);
+  });
+
+  const ql = document.getElementById("qlist");
+  ql.innerHTML = "";
+  filtered.forEach((q) => {
+    const globalIdx = QS.indexOf(q);
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const c = BADGE[q.type];
+    const badgeStyle = `background:${c.bg};color:${c.text};border:1px solid ${c.bd}`;
+
+    let optsHtml = "";
+    if (q.opts) {
+      optsHtml = `<div class="options">` + q.opts.map(o => {
+        let cls = "opt";
+        if (revealed[globalIdx]) {
+          if (o === q.ans) cls += " correct";
+          else if (selected[globalIdx] === o) cls += " wrong";
+        } else if (selected[globalIdx] === o) cls += " selected";
+        return `<button class="${cls}" data-qi="${globalIdx}" data-opt="${o}">${o}</button>`;
+      }).join("") + `</div>`;
+    }
+
+    const revLabel = revealed[globalIdx] ? "답 숨기기 ▲" : "정답 & 해설 보기 ▼";
+    const ansShow = revealed[globalIdx] ? "answer-box show" : "answer-box";
+
+    card.innerHTML = `
+      <div class="card-head">
+        <div class="meta">
+          <span class="qnum">Q${globalIdx + 1}</span>
+          <span class="badge" style="${badgeStyle}">${q.type}</span>
+          <span class="topic">${q.topic}</span>
+        </div>
+        <p class="qtext">${q.q}</p>
+        ${optsHtml}
+        <button class="reveal-btn" data-qi="${globalIdx}">${revLabel}</button>
+      </div>
+      <div class="${ansShow}" id="ans-${globalIdx}">
+        <div class="ans-label">
+          <span>정답: </span><span>${q.ans}</span>
+        </div>
+        <p class="explanation">${q.exp}</p>
+      </div>`;
+
+    ql.appendChild(card);
+  });
+
+  ql.querySelectorAll(".opt").forEach(b => {
+    b.onclick = () => {
+      const qi = +b.dataset.qi;
+      selected[qi] = b.dataset.opt;
+      render();
+    };
+  });
+  ql.querySelectorAll(".reveal-btn").forEach(b => {
+    b.onclick = () => {
+      const qi = +b.dataset.qi;
+      revealed[qi] = !revealed[qi];
+      render();
+    };
+  });
+}
+
+render();
+</script>
+</body>
+</html>
