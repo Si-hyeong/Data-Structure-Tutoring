@@ -1,1286 +1,258 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2868
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset129 AppleSDGothicNeo-Regular;\f2\fnil\fcharset0 LucidaGrande;
-}
-{\colortbl;\red255\green255\blue255;}
-{\*\expandedcolortbl;;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww15020\viewh12020\viewkind0
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSE203 Week 4 Practice Exam</title>
+<style>
+  :root {
+    --bg: #f8f8f6; --card: #ffffff; --border: #e5e4df;
+    --text: #1a1a18; --muted: #6b6b66; --hint: #9b9b96;
+    --green-bg: #e1f5ee; --green-text: #085041; --green-bd: #5dcaa5;
+    --blue-bg: #e6f1fb; --blue-text: #185fa5; --blue-bd: #378add;
+    --amber-bg: #faeeda; --amber-text: #854f0b; --amber-bd: #ef9f27;
+    --purple-bg: #eeedfe; --purple-text: #534ab7; --purple-bd: #7f77dd;
+    --coral-bg: #faece7; --coral-text: #993c1d; --coral-bd: #d85a30;
+    --red-bg: #fcebeb; --red-text: #501313; --red-bd: #e24b4a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.6; }
+  .wrap { max-width: 740px; margin: 0 auto; padding: 32px 16px 48px; }
+  h1 { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+  .sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
 
-\f0\fs24 \cf0 <!DOCTYPE html>\
-<html lang="ko">\
-<head>\
-<meta charset="UTF-8">\
-<meta name="viewport" content="width=device-width, initial-scale=1.0">\
-<title>CSE203 Week 4 Practice Exam</title>\
-<style>\
-  :root \{\
-    --bg: #f8f8f6; --card: #ffffff; --border: #e5e4df;\
-    --text: #1a1a18; --muted: #6b6b66; --hint: #9b9b96;\
-    --green-bg: #e1f5ee; --green-text: #085041; --green-bd: #5dcaa5;\
-    --blue-bg: #e6f1fb; --blue-text: #185fa5; --blue-bd: #378add;\
-    --amber-bg: #faeeda; --amber-text: #854f0b; --amber-bd: #ef9f27;\
-    --purple-bg: #eeedfe; --purple-text: #534ab7; --purple-bd: #7f77dd;\
-    --coral-bg: #faece7; --coral-text: #993c1d; --coral-bd: #d85a30;\
-    --red-bg: #fcebeb; --red-text: #501313; --red-bd: #e24b4a;\
-  \}\
-  * \{ box-sizing: border-box; margin: 0; padding: 0; \}\
-  body \{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;\
-    background: var(--bg); color: var(--text); line-height: 1.6; \}\
-  .wrap \{ max-width: 740px; margin: 0 auto; padding: 32px 16px 48px; \}\
-  h1 \{ font-size: 20px; font-weight: 600; margin-bottom: 4px; \}\
-  .sub \{ font-size: 13px; color: var(--muted); margin-bottom: 20px; \}\
-\
-  .filters \{ display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 24px; \}\
-  .filter-btn \{ padding: 4px 12px; border-radius: 20px; font-size: 12px;\
-    border: 1px solid var(--border); background: var(--card);\
-    color: var(--muted); cursor: pointer; \}\
-  .filter-btn.active \{ background: var(--text); color: #fff; border-color: var(--text); \}\
-\
-  .card \{ background: var(--card); border: 1px solid var(--border);\
-    border-radius: 12px; margin-bottom: 14px; overflow: hidden; \}\
-  .card-head \{ padding: 16px 18px; \}\
-  .meta \{ display: flex; align-items: center; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; \}\
-  .qnum \{ font-size: 12px; color: var(--hint); margin-right: 2px; \}\
-  .badge \{ display: inline-block; font-size: 11px; font-weight: 500;\
-    padding: 2px 9px; border-radius: 20px; \}\
-  .topic \{ font-size: 11px; padding: 2px 8px; border-radius: 20px;\
-    background: var(--bg); color: var(--muted); border: 1px solid var(--border); \}\
-  .qtext \{ font-size: 14px; line-height: 1.65; white-space: pre-line; \}\
-\
-  .options \{ margin-top: 12px; display: flex; flex-direction: column; gap: 6px; \}\
-  .opt \{ text-align: left; padding: 7px 12px; border-radius: 8px;\
-    border: 1px solid var(--border); background: var(--card);\
-    color: var(--text); cursor: pointer; font-size: 13px;\
-    font-family: inherit; transition: background .15s; \}\
-  .opt:hover \{ background: var(--bg); \}\
-  .opt.correct \{ background: var(--green-bg); border-color: var(--green-bd); color: var(--green-text); \}\
-  .opt.wrong   \{ background: var(--red-bg);   border-color: var(--red-bd);   color: var(--red-text); \}\
-  .opt.selected \{ background: var(--blue-bg); border-color: var(--blue-bd); \}\
-\
-  .reveal-btn \{ margin-top: 12px; padding: 6px 14px; border-radius: 8px;\
-    border: 1px solid var(--border); background: var(--card);\
-    color: var(--muted); cursor: pointer; font-size: 13px; font-family: inherit; \}\
-  .reveal-btn:hover \{ background: var(--bg); \}\
-\
-  .answer-box \{ padding: 14px 18px; border-top: 1px solid var(--border); display: none; \}\
-  .answer-box.show \{ display: block; \}\
-  .ans-label \{ padding: 7px 12px; border-radius: 8px; margin-bottom: 10px;\
-    background: var(--green-bg); border: 1px solid var(--green-bd); \}\
-  .ans-label span:first-child \{ font-size: 12px; font-weight: 600; color: var(--green-text); \}\
-  .ans-label span:last-child  \{ font-size: 13px; font-weight: 600; color: var(--green-text); \}\
-  .explanation \{ font-size: 13px; line-height: 1.8; white-space: pre-line; color: var(--muted); \}\
-\
-  .footer \{ text-align: center; font-size: 12px; color: var(--hint); margin-top: 8px; \}\
-  .hidden \{ display: none; \}\
-</style>\
-</head>\
-<body>\
-<div class="wrap">\
-  <h1>CSE203 Week 4 \'96 Practice Exam</h1>\
-  <p class="sub">Linear Structures: List \'b7 Stack \'b7 Queue \'b7 Deque &nbsp;|&nbsp; 20 questions</p>\
-\
-  <div class="filters" id="filters"></div>\
-  <div id="qlist"></div>\
-  <p class="footer" id="footer"></p>\
-</div>\
-\
-<script>\
-const BADGE = \{\
-  "True/False":        \{ bg:"#e1f5ee", text:"#085041", bd:"#5dcaa5" \},\
-  "Multiple Choice":   \{ bg:"#e6f1fb", text:"#185fa5", bd:"#378add" \},\
-  "Fill-in-the-blank": \{ bg:"#faeeda", text:"#854f0b", bd:"#ef9f27" \},\
-  "Programming":       \{ bg:"#eeedfe", text:"#534ab7", bd:"#7f77dd" \},\
-  "Draw":              \{ bg:"#faece7", text:"#993c1d", bd:"#d85a30" \},\
-\};\
-\
-const QS = [\
-  \{ id:1, type:"True/False", topic:"Array / Memory",\
-    q:"In Python, a list stores actual object values directly inside the array, similar to a compact array using the array module.",\
-    ans:"False",\
-    exp:"
-\f1 \'c6\'c4\'c0\'cc\'bd\'e3\'c0\'c7
-\f0  list
-\f1 \'b4\'c2
-\f0  
-\f1 \'b0\'b4\'c3\'bc
-\f0 (object)
-\f1 \'bf\'a1
-\f0  
-\f1 \'b4\'eb\'c7\'d1
-\f0  
-\f1 \'c2\'fc\'c1\'b6
-\f0 (reference, 
-\f1 \'c6\'f7\'c0\'ce\'c5\'cd
-\f0 )
-\f1 \'b8\'a6
-\f0  
-\f1 \'b9\'e8\'bf\'ad\'bf\'a1
-\f0  
-\f1 \'c0\'fa\'c0\'e5\'c7\'d5\'b4\'cf\'b4\'d9
-\f0 . 
-\f1 \'bd\'c7\'c1\'a6
-\f0  
-\f1 \'b0\'aa\'c0\'bb
-\f0  
-\f1 \'c1\'f7\'c1\'a2
-\f0  
-\f1 \'c0\'fa\'c0\'e5\'c7\'cf\'b4\'c2
-\f0  
-\f1 \'b0\'cd\'c0\'ba
-\f0  compact array(array 
-\f1 \'b8\'f0\'b5\'e2
-\f0  
-\f1 \'bb\'e7\'bf\'eb
-\f0  
-\f1 \'bd\'c3
-\f0 )
-\f1 \'c0\'d4\'b4\'cf\'b4\'d9
-\f0 . 
-\f1 \'b1\'d7\'b7\'a1\'bc\'ad
-\f0  list
-\f1 \'b4\'c2
-\f0  int, str, 
-\f1 \'be\'ee\'b6\'b2
-\f0  
-\f1 \'b0\'b4\'c3\'bc\'b5\'e7
-\f0  
-\f1 \'b4\'e3\'c0\'bb
-\f0  
-\f1 \'bc\'f6
-\f0  
-\f1 \'c0\'d6\'c1\'f6\'b8\'b8
-\f0 , array 
-\f1 \'b8\'f0\'b5\'e2\'c0\'ba
-\f0  
-\f1 \'c1\'f6\'c1\'a4\'b5\'c8
-\f0  
-\f1 \'c5\'b8\'c0\'d4
-\f0  
-\f1 \'c4\'da\'b5\'e5
-\f0 ('i', 'd' 
-\f1 \'b5\'ee
-\f0 )
-\f1 \'c0\'c7
-\f0  
-\f1 \'bf\'f8\'bd\'c3\'b0\'aa\'b8\'b8
-\f0  
-\f1 \'c0\'fa\'c0\'e5\'c7\'d5\'b4\'cf\'b4\'d9
-\f0 ." \},\
-  \{ id:2, type:"True/False", topic:"Array Complexity",\
-    q:"In a Python list, both data.append(value) and data.insert(0, value) have the same amortized time complexity.",\
-    ans:"False",\
-    exp:"append()
-\f1 \'b4\'c2
-\f0  
-\f1 \'b8\'ae\'bd\'ba\'c6\'ae
-\f0  
-\f1 \'b3\'a1\'bf\'a1
-\f0  
-\f1 \'c3\'df\'b0\'a1\'c7\'cf\'b9\'c7\'b7\'ce
-\f0  
-\f1 \'bb\'f3\'b0\'a2
-\f0 (amortized) O(1)
-\f1 \'c0\'d4\'b4\'cf\'b4\'d9
-\f0 (doubling 
-\f1 \'c0\'fc\'b7\'ab
-\f0 ). 
-\f1 \'b9\'dd\'b8\'e9
-\f0  insert(0, value)
-\f1 \'b4\'c2
-\f0  
-\f1 \'b8\'f0\'b5\'e7
-\f0  
-\f1 \'b1\'e2\'c1\'b8
-\f0  
-\f1 \'bf\'f8\'bc\'d2\'b8\'a6
-\f0  
-\f1 \'c7\'d1
-\f0  
-\f1 \'c4\'ad\'be\'bf
-\f0  
-\f1 \'bf\'c0\'b8\'a5\'c2\'ca\'c0\'b8\'b7\'ce
-\f0  
-\f1 \'b9\'d0\'be\'ee\'be\'df
-\f0  
-\f1 \'c7\'cf\'b9\'c7\'b7\'ce
-\f0  O(n)
-\f1 \'c0\'d4\'b4\'cf\'b4\'d9
-\f0 . 
-\f1 \'b0\'a1\'c0\'e5
-\f0  
-\f1 \'ba\'f1\'bf\'eb\'c0\'cc
-\f0  
-\f1 \'b8\'b9\'c0\'cc
-\f0  
-\f1 \'b5\'e5\'b4\'c2
-\f0  
-\f1 \'bf\'ac\'bb\'ea\'c0\'ba
-\f0  
-\f1 \'b8\'c7
-\f0  
-\f1 \'be\'d5\'bf\'a1
-\f0  
-\f1 \'bb\'f0\'c0\'d4\'c7\'cf\'b4\'c2
-\f0  
-\f1 \'b0\'e6\'bf\'ec\'c0\'d4\'b4\'cf\'b4\'d9
-\f0 ." \},\
-  \{ id:3, type:"Multiple Choice", topic:"Amortized Analysis",\
-    q:"When using the doubling strategy for a dynamic array, what is the amortized time complexity of a single add(o) operation?",\
-    opts:["O(log n)","O(n)","O(1)","O(n\'b2)"], ans:"O(1)",\
-    exp:"Doubling 
-\f1 \'c0\'fc\'b7\'ab\'bf\'a1\'bc\'ad\'b4\'c2
-\f0  
-\f1 \'b9\'e8\'bf\'ad\'c0\'cc
-\f0  
-\f1 \'b2\'cb
-\f0  
-\f1 \'c2\'fb
-\f0  
-\f1 \'b6\'a7\'b8\'b6\'b4\'d9
-\f0  
-\f1 \'c5\'a9\'b1\'e2\'b8\'a6
-\f0  2
-\f1 \'b9\'e8\'b7\'ce
-\f0  
-\f1 \'b4\'c3\'b8\'b3\'b4\'cf\'b4\'d9
-\f0 . n
-\f1 \'b9\'f8\'c0\'c7
-\f0  add 
-\f1 \'bf\'ac\'bb\'ea\'bf\'a1
-\f0  
-\f1 \'b0\'c9\'b8\'ae\'b4\'c2
-\f0  
-\f1 \'c3\'d1
-\f0  
-\f1 \'bd\'c3\'b0\'a3
-\f0  T(n)
-\f1 \'c0\'ba
-\f0  n + 1 + 2 + 4 + \'85 + 2^k = 3n - 1 = O(n)
-\f1 \'c0\'d4\'b4\'cf\'b4\'d9
-\f0 . 
-\f1 \'b5\'fb\'b6\'f3\'bc\'ad
-\f0  
-\f1 \'bf\'ac\'bb\'ea
-\f0  1
-\f1 \'c8\'b8\'b4\'e7
-\f0  
-\f1 \'c6\'f2\'b1\'d5
-\f0 (
-\f1 \'bb\'f3\'b0\'a2
-\f0 , amortized) 
-\f1 \'bd\'c3\'b0\'a3\'c0\'ba
-\f0  O(n)/n = O(1)
-\f1 \'c0\'cc
-\f0  
-\f1 \'b5\'cb\'b4\'cf\'b4\'d9
-\f0 ." \},\
-  \{ id:4, type:"Fill-in-the-blank", topic:"Incremental Strategy",\
-    q:"When using the incremental strategy (increase by constant c), the amortized time of add is O(___), and the total time T(n) is O(___).",\
-    ans:"O(n) / O(n\'b2)",\
-    exp:"Incremental 
-\f1 \'c0\'fc\'b7\'ab
-\f0 (
-\f1 \'bb\'f3\'bc\'f6
-\f0  c
-\f1 \'be\'bf
-\f0  
-\f1 \'c1\'f5\'b0\'a1
-\f0 )
-\f1 \'c0\'b8\'b7\'ce
-\f0  k = n/c
-\f1 \'b9\'f8
-\f0  
-\f1 \'ba\'b9\'bb\'e7\'b0\'a1
-\f0  
-\f1 \'c0\'cf\'be\'ee\'b3\'b3\'b4\'cf\'b4\'d9
-\f0 . 
-\f1 \'c3\'d1
-\f0  
-\f1 \'ba\'f1\'bf\'eb
-\f0  T(n) = n + c(1+2+\'85+k) = n + ck(k+1)/2 \uc0\u8776  O(n\'b2)
-\f1 \'c0\'d4\'b4\'cf\'b4\'d9
-\f0 . 
-\f1 \'b5\'fb\'b6\'f3\'bc\'ad
-\f0  
-\f1 \'bb\'f3\'b0\'a2
-\f0  
-\f1 \'bd\'c3\'b0\'a3\'c0\'ba
-\f0  T(n)/n = O(n)
-\f1 \'c0\'cc
-\f0  
-\f1 \'b5\'cb\'b4\'cf\'b4\'d9
-\f0 . Doubling
-\f1 \'c0\'c7
-\f0  O(1)
-\f1 \'ba\'b8\'b4\'d9
-\f0  
-\f1 \'c8\'ce\'be\'c0
-\f0  
-\f1 \'ba\'f1\'c8\'bf\'c0\'b2\'c0\'fb\'c0\'d4\'b4\'cf\'b4\'d9
-\f0 ." \},\
-  \{ id:5, type:"True/False", topic:"List vs Tuple",\
-    q:"In Python, both list and tuple support O(1) indexing (e.g., data[j]) because they are stored as arrays.",\
-    ans:"True",\
-    exp:"list
-\f1 \'bf\'cd
-\f0  tuple 
-\f1 \'b8\'f0\'b5\'ce
-\f0  
-\f1 \'b3\'bb\'ba\'ce\'c0\'fb\'c0\'b8\'b7\'ce
-\f0  
-\f1 \'b9\'e8\'bf\'ad
-\f0 (array)
-\f1 \'b7\'ce
-\f0  
-\f1 \'c0\'fa\'c0\'e5\'b5\'cb\'b4\'cf\'b4\'d9
-\f0 . 
-\f1 \'b9\'e8\'bf\'ad\'c0\'ba
-\f0  
-\f1 \'bf\'ac\'bc\'d3\'b5\'c8
-\f0  
-\f1 \'b8\'de\'b8\'f0\'b8\'ae
-\f0  
-\f1 \'c0\'a7\'c4\'a1\'b8\'a6
-\f0  
-\f1 \'bb\'e7\'bf\'eb\'c7\'cf\'b1\'e2
-\f0  
-\f1 \'b6\'a7\'b9\'ae\'bf\'a1
-\f0  
-\f1 \'c0\'ce\'b5\'a6\'bd\'ba
-\f0  j
-\f1 \'b7\'ce
-\f0  
-\f1 \'c1\'f7\'c1\'a2
-\f0  
-\f1 \'c1\'a2\'b1\'d9
-\f0 (data[j])
-\f1 \'c7\'cf\'b4\'c2
-\f0  
-\f1 \'b0\'cd\'c0\'cc
-\f0  O(1)
-\f1 \'c0\'d4\'b4\'cf\'b4\'d9
-\f0 . 
-\f1 \'b8\'de\'b8\'f0\'b8\'ae
-\f0  
-\f1 \'bd\'c3\'c0\'db
-\f0  
-\f1 \'c1\'d6\'bc\'d2
-\f0  + j \'d7 
-\f1 \'bf\'f8\'bc\'d2\'c5\'a9\'b1\'e2\'b7\'ce
-\f0  
-\f1 \'b9\'d9\'b7\'ce
-\f0  
-\f1 \'b0\'e8\'bb\'ea\'c7\'d2
-\f0  
-\f1 \'bc\'f6
-\f0  
-\f1 \'c0\'d6\'b1\'e2
-\f0  
-\f1 \'b6\'a7\'b9\'ae\'c0\'d4\'b4\'cf\'b4\'d9
-\f0 ." \},\
-  \{ id:6, type:"Fill-in-the-blank", topic:"Compact Array",\
-    q:"To create a compact array of signed integers in Python using the array module, you write:\\nprimes = array('___', [2, 3, 5, 7])",\
-    ans:"'i'",\
-    exp:"Python array 
-\f1 \'b8\'f0\'b5\'e2\'bf\'a1\'bc\'ad
-\f0  type code 'i'
-\f1 \'b4\'c2
-\f0  signed int(C
-\f1 \'c0\'c7
-\f0  int, 
-\f1 \'c3\'d6\'bc\'d2
-\f0  2
-\f1 \'b9\'d9\'c0\'cc\'c6\'ae
-\f0 )
-\f1 \'b8\'a6
-\f0  
-\f1 \'c0\'c7\'b9\'cc\'c7\'d5\'b4\'cf\'b4\'d9
-\f0 . 
-\f1 \'b1\'e2\'c5\'b8
-\f0  
-\f1 \'c1\'d6\'bf\'e4
-\f0  
-\f1 \'c4\'da\'b5\'e5
-\f0 : 'b'=signed char(1B), 'd'=double(8B), 'f'=float(4B), 'l'=signed long(4B). type code
-\f1 \'b4\'c2
-\f0  
-\f1 \'c0\'fa\'c0\'e5\'c7\'d2
-\f0  
-\f1 \'b5\'a5\'c0\'cc\'c5\'cd
-\f0  
-\f1 \'c5\'b8\'c0\'d4\'c0\'bb
-\f0  
-\f1 \'b8\'ed\'bd\'c3\'c7\'d5\'b4\'cf\'b4\'d9
-\f0 ." \},\
-  \{ id:7, type:"True/False", topic:"Three-way Disjointness",\
-    q:"The function disjoint2 (which checks if a==b before iterating over C) runs in O(n\'b2) time, assuming no individual sequence contains duplicate values.",\
-    ans:"True",\
-    exp:"disjoint2
-\f1 \'bf\'a1\'bc\'ad
-\f0  a==b
-\f1 \'c0\'ce
-\f0  
-\f1 \'b0\'e6\'bf\'ec\'b8\'b8
-\f0  C
-\f1 \'b8\'a6
-\f0  
-\f1 \'bc\'f8\'c8\'b8\'c7\'d5\'b4\'cf\'b4\'d9
-\f0 . 
-\f1 \'c1\'df\'ba\'b9\'b0\'aa\'c0\'cc
-\f0  
-\f1 \'be\'f8\'b4\'d9\'b4\'c2
-\f0  
-\f1 \'b0\'a1\'c1\'a4
-\f0  
-\f1 \'c7\'cf\'bf\'a1
-\f0 , a==b
-\f1 \'b0\'a1
-\f0  
-\f1 \'bc\'ba\'b8\'b3\'c7\'cf\'b4\'c2
-\f0  
-\f1 \'b0\'e6\'bf\'ec\'b4\'c2
-\f0  
-\f1 \'c3\'d6\'b4\'eb
-\f0  N
-\f1 \'b9\'f8
-\f0 (
-\f1 \'b0\'a2
-\f0  
-\f1 \'b0\'aa\'c0\'cc
-\f0  
-\f1 \'c7\'d1
-\f0  
-\f1 \'b9\'f8\'be\'bf\'b8\'b8
-\f0  
-\f1 \'b5\'ee\'c0\'e5
-\f0 )
-\f1 \'c0\'d4\'b4\'cf\'b4\'d9
-\f0 . 
-\f1 \'b5\'fb\'b6\'f3\'bc\'ad
-\f0  outer loop O(n\'b2) + inner loop 
-\f1 \'c3\'d6\'b4\'eb
-\f0  n
-\f1 \'b9\'f8\'c0\'b8\'b7\'ce
-\f0  
-\f1 \'c0\'fc\'c3\'bc
-\f0  O(n\'b2)
-\f1 \'c0\'d4\'b4\'cf\'b4\'d9
-\f0 ." \},\
-  \{ id:8, type:"Programming", topic:"Stack ADT",\
-    q:"Complete the ArrayStack pop() method:\\n\\ndef pop(self):\\n    if self.is_empty():\\n        raise Empty('Stack is empty')\\n    return self._data.___( )",\
-    ans:"self._data.pop()",\
-    exp:"Stack
-\f1 \'c0\'ba
-\f0  LIFO(Last In First Out) 
-\f1 \'b1\'b8\'c1\'b6\'b7\'ce
-\f0 , 
-\f1 \'b0\'a1\'c0\'e5
-\f0  
-\f1 \'c3\'d6\'b1\'d9\'bf\'a1
-\f0  
-\f1 \'bb\'f0\'c0\'d4\'b5\'c8
-\f0  
-\f1 \'bf\'f8\'bc\'d2\'b8\'a6
-\f0  
-\f1 \'c1\'a6\'b0\'c5\'c7\'d5\'b4\'cf\'b4\'d9
-\f0 . 
-\f1 \'b3\'bb\'ba\'ce\'c0\'fb\'c0\'b8\'b7\'ce
-\f0  Python list
-\f1 \'b8\'a6
-\f0  
-\f1 \'bb\'e7\'bf\'eb\'c7\'cf\'b9\'c7\'b7\'ce
-\f0  list
-\f1 \'c0\'c7
-\f0  pop()
-\f1 \'c0\'bb
-\f0  
-\f1 \'c8\'a3\'c3\'e2\'c7\'d5\'b4\'cf\'b4\'d9
-\f0 . pop()
-\f1 \'c0\'ba
-\f0  
-\f1 \'c0\'ce\'bc\'f6
-\f0  
-\f1 \'be\'f8\'c0\'cc
-\f0  
-\f1 \'c8\'a3\'c3\'e2\'c7\'cf\'b8\'e9
-\f0  
-\f1 \'b8\'ae\'bd\'ba\'c6\'ae\'c0\'c7
-\f0  
-\f1 \'b8\'b6\'c1\'f6\'b8\'b7
-\f0  
-\f1 \'bf\'f8\'bc\'d2\'b8\'a6
-\f0  
-\f1 \'c1\'a6\'b0\'c5\'c7\'cf\'b0\'ed
-\f0  
-\f1 \'b9\'dd\'c8\'af\'c7\'d5\'b4\'cf\'b4\'d9
-\f0 . 
-\f1 \'c0\'cc\'b0\'cd\'c0\'cc
-\f0  Stack
-\f1 \'c0\'c7
-\f0  top 
-\f1 \'bf\'f8\'bc\'d2\'bf\'a1
-\f0  
-\f1 \'c7\'d8\'b4\'e7\'c7\'d5\'b4\'cf\'b4\'d9
-\f0 ." \},\
-  \{ id:9, type:"Draw", topic:"Stack Operations",\
-    q:"Given an empty stack S, execute in order and write the final stack (bottom
-\f2 \uc0\u8594 
-\f0 top):\\nS.push(5) 
-\f2 \uc0\u8594 
-\f0  S.push(3) 
-\f2 \uc0\u8594 
-\f0  S.pop() 
-\f2 \uc0\u8594 
-\f0  S.push(7) 
-\f2 \uc0\u8594 
-\f0  S.push(9) 
-\f2 \uc0\u8594 
-\f0  S.pop() 
-\f2 \uc0\u8594 
-\f0  S.push(4)",\
-    ans:"[5, 7, 4]  (bottom 
-\f2 \uc0\u8594 
-\f0  top)",\
-    exp:"
-\f1 \'b4\'dc\'b0\'e8\'ba\'b0
-\f0  
-\f1 \'c3\'df\'c0\'fb
-\f0 :\\n1. push(5) 
-\f2 \uc0\u8594 
-\f0  [5]\\n2. push(3) 
-\f2 \uc0\u8594 
-\f0  [5, 3]\\n3. pop() 
-\f2 \uc0\u8594 
-\f0  3 
-\f1 \'c1\'a6\'b0\'c5
-\f0  
-\f2 \uc0\u8594 
-\f0  [5]\\n4. push(7) 
-\f2 \uc0\u8594 
-\f0  [5, 7]\\n5. push(9) 
-\f2 \uc0\u8594 
-\f0  [5, 7, 9]\\n6. pop() 
-\f2 \uc0\u8594 
-\f0  9 
-\f1 \'c1\'a6\'b0\'c5
-\f0  
-\f2 \uc0\u8594 
-\f0  [5, 7]\\n7. push(4) 
-\f2 \uc0\u8594 
-\f0  [5, 7, 4]\\n
-\f1 \'c3\'d6\'c1\'be
-\f0 : bottom=5, top=4" \},\
-  \{ id:10, type:"True/False", topic:"Stack Application",\
-    q:"The parentheses matching algorithm returns True when S.is_empty() is True at the end, meaning all opening symbols were successfully matched.",\
-    ans:"True",\
-    exp:"
-\f1 \'b0\'fd\'c8\'a3
-\f0  
-\f1 \'b8\'c5\'c4\'aa
-\f0  
-\f1 \'be\'cb\'b0\'ed\'b8\'ae\'c1\'f2
-\f0 (ParenMatch)
-\f1 \'bf\'a1\'bc\'ad
-\f0  
-\f1 \'bf\'a9\'b4\'c2
-\f0  
-\f1 \'b0\'fd\'c8\'a3\'b4\'c2
-\f0  
-\f1 \'bd\'ba\'c5\'c3\'bf\'a1
-\f0  push, 
-\f1 \'b4\'dd\'b4\'c2
-\f0  
-\f1 \'b0\'fd\'c8\'a3\'b0\'a1
-\f0  
-\f1 \'b3\'aa\'bf\'c0\'b8\'e9
-\f0  pop
-\f1 \'c7\'cf\'bf\'a9
-\f0  
-\f1 \'b4\'eb\'c0\'c0
-\f0  
-\f1 \'bf\'a9\'ba\'ce
-\f0  
-\f1 \'c8\'ae\'c0\'ce
-\f0 . 
-\f1 \'b8\'b6\'c1\'f6\'b8\'b7\'bf\'a1
-\f0  
-\f1 \'bd\'ba\'c5\'c3\'c0\'cc
-\f0  
-\f1 \'ba\'f1\'be\'ee\'c0\'d6\'b4\'d9
-\f0 (is_empty()==True)
-\f1 \'b8\'e9
-\f0  
-\f1 \'b8\'f0\'b5\'e7
-\f0  
-\f1 \'bf\'a9\'b4\'c2
-\f0  
-\f1 \'b0\'fd\'c8\'a3\'b0\'a1
-\f0  
-\f1 \'c2\'a6\'c0\'bb
-\f0  
-\f1 \'c3\'a3\'be\'d2\'b4\'d9\'b4\'c2
-\f0  
-\f1 \'c0\'c7\'b9\'cc\'b7\'ce
-\f0  True
-\f1 \'b8\'a6
-\f0  
-\f1 \'b9\'dd\'c8\'af\'c7\'d5\'b4\'cf\'b4\'d9
-\f0 ." \},\
-  \{ id:11, type:"Multiple Choice", topic:"Infix/Postfix",\
-    q:"What is the correct postfix form of the infix expression: (1 + 2) * 3?",\
-    opts:["1 2 + 3 *","1 2 3 + *","* + 1 2 3","1 + 2 3 *"], ans:"1 2 + 3 *",\
-    exp:"(1+2)*3 
-\f2 \uc0\u8594 
-\f0  Postfix 
-\f1 \'ba\'af\'c8\'af
-\f0 :\\n- 
-\f1 \'c7\'c7\'bf\'ac\'bb\'ea\'c0\'da
-\f0  
-\f1 \'bc\'f8\'bc\'ad\'b4\'eb\'b7\'ce
-\f0 : 1, 2 
-\f1 \'c3\'e2\'b7\'c2
-\f0 \\n- 
-\f1 \'b0\'fd\'c8\'a3
-\f0  
-\f1 \'b4\'dd\'c8\'f7\'b8\'e9
-\f0  + 
-\f1 \'c3\'e2\'b7\'c2
-\f0 : 1 2 +\\n- 
-\f1 \'b8\'b6\'c1\'f6\'b8\'b7
-\f0  * 
-\f1 \'c3\'e2\'b7\'c2
-\f0 : 1 2 + 3 *\\n
-\f1 \'c6\'f2\'b0\'a1
-\f0 : 
-\f1 \'bd\'ba\'c5\'c3\'bf\'a1
-\f0  1,2 push 
-\f2 \uc0\u8594 
-\f0  + pop 2
-\f1 \'b0\'b3
-\f0  
-\f2 \uc0\u8594 
-\f0  3 push 
-\f2 \uc0\u8594 
-\f0  push 3 
-\f2 \uc0\u8594 
-\f0  * pop 2
-\f1 \'b0\'b3
-\f0  
-\f2 \uc0\u8594 
-\f0  9" \},\
-  \{ id:12, type:"Programming", topic:"Queue ADT",\
-    q:"In ArrayQueue.dequeue(), why is the modulo (%) operator used?\\n\\nself._front = (self._front + 1) % len(self._data)",\
-    ans:"Circular array (
-\f1 \'bc\'f8\'c8\'af
-\f0  
-\f1 \'b9\'e8\'bf\'ad
-\f0 ) 
-\f1 \'b1\'b8\'c7\'f6
-\f0  \'97 
-\f1 \'c0\'ce\'b5\'a6\'bd\'ba\'b0\'a1
-\f0  
-\f1 \'b3\'a1\'bf\'a1
-\f0  
-\f1 \'b5\'b5\'b4\'de\'c7\'cf\'b8\'e9
-\f0  0
-\f1 \'c0\'b8\'b7\'ce
-\f0  wrap around",\
-    exp:"
-\f1 \'b4\'dc\'bc\'f8\'c8\'f7
-\f0  _front
-\f1 \'b8\'a6
-\f0  
-\f1 \'c1\'f5\'b0\'a1\'bd\'c3\'c5\'b0\'b8\'e9
-\f0  
-\f1 \'b9\'e8\'bf\'ad
-\f0  
-\f1 \'b3\'a1\'bf\'a1
-\f0  
-\f1 \'b5\'b5\'b4\'de
-\f0  
-\f1 \'c8\'c4
-\f0  
-\f1 \'be\'d5\'ba\'ce\'ba\'d0
-\f0  
-\f1 \'b0\'f8\'b0\'a3\'c0\'cc
-\f0  
-\f1 \'b3\'b6\'ba\'f1\'b5\'cb\'b4\'cf\'b4\'d9
-\f0 . %
-\f1 \'b8\'a6
-\f0  
-\f1 \'bb\'e7\'bf\'eb\'c7\'cf\'b8\'e9
-\f0  
-\f1 \'c0\'ce\'b5\'a6\'bd\'ba\'b0\'a1
-\f0  
-\f1 \'b9\'e8\'bf\'ad
-\f0  
-\f1 \'b3\'a1\'c0\'bb
-\f0  
-\f1 \'b3\'d1\'c0\'bb
-\f0  
-\f1 \'b6\'a7
-\f0  
-\f1 \'c0\'da\'b5\'bf\'c0\'b8\'b7\'ce
-\f0  0
-\f1 \'c0\'b8\'b7\'ce
-\f0  
-\f1 \'b5\'b9\'be\'c6\'bf\'c9\'b4\'cf\'b4\'d9
-\f0 . 
-\f1 \'bf\'b9
-\f0 : _front=9, len=10 
-\f2 \uc0\u8594 
-\f0  (9+1)%10=0. 
-\f1 \'c0\'cc\'b7\'ce\'bd\'e1
-\f0  
-\f1 \'b9\'e8\'bf\'ad
-\f0  
-\f1 \'b0\'f8\'b0\'a3\'c0\'bb
-\f0  
-\f1 \'c8\'bf\'c0\'b2\'c0\'fb\'c0\'b8\'b7\'ce
-\f0  
-\f1 \'c0\'e7\'bb\'e7\'bf\'eb\'c7\'d5\'b4\'cf\'b4\'d9
-\f0 ." \},\
-  \{ id:13, type:"True/False", topic:"Queue ADT",\
-    q:"In the Queue ADT, enqueue() adds an element at the front, and dequeue() removes an element from the rear.",\
-    ans:"False",\
-    exp:"Queue
-\f1 \'b4\'c2
-\f0  FIFO(First In First Out) 
-\f1 \'b1\'b8\'c1\'b6\'c0\'d4\'b4\'cf\'b4\'d9
-\f0 . enqueue()
-\f1 \'b4\'c2
-\f0  rear(
-\f1 \'b5\'da
-\f0 )
-\f1 \'bf\'a1
-\f0  
-\f1 \'c3\'df\'b0\'a1\'c7\'cf\'b0\'ed
-\f0 , dequeue()
-\f1 \'b4\'c2
-\f0  front(
-\f1 \'be\'d5
-\f0 )
-\f1 \'bf\'a1\'bc\'ad
-\f0  
-\f1 \'c1\'a6\'b0\'c5\'c7\'d5\'b4\'cf\'b4\'d9
-\f0 . ATM 
-\f1 \'c1\'d9
-\f0  
-\f1 \'bc\'ad\'b1\'e2\'b8\'a6
-\f0  
-\f1 \'bb\'fd\'b0\'a2\'c7\'cf\'b8\'e9
-\f0  
-\f1 \'b5\'cb\'b4\'cf\'b4\'d9
-\f0 : 
-\f1 \'bb\'f5\'b7\'ce\'bf\'ee
-\f0  
-\f1 \'bb\'e7\'b6\'f7\'c0\'ba
-\f0  
-\f1 \'c1\'d9
-\f0  
-\f1 \'b3\'a1\'bf\'a1
-\f0 (enqueue at rear), 
-\f1 \'bc\'ad\'ba\'f1\'bd\'ba\'b4\'c2
-\f0  
-\f1 \'b8\'c7
-\f0  
-\f1 \'be\'d5\'bf\'a1\'bc\'ad
-\f0 (dequeue from front)." \},\
-  \{ id:14, type:"Fill-in-the-blank", topic:"Queue Implementation",\
-    q:"In ArrayQueue.enqueue(), the rear slot index is:\\navail = (self._front + self._size) % len(self._data)\\nWhat does this formula compute?",\
-    ans:"
-\f1 \'b4\'d9\'c0\'bd
-\f0  
-\f1 \'bf\'f8\'bc\'d2\'b8\'a6
-\f0  
-\f1 \'bb\'f0\'c0\'d4\'c7\'d2
-\f0  
-\f1 \'bc\'f8\'c8\'af
-\f0  
-\f1 \'b9\'e8\'bf\'ad
-\f0  
-\f1 \'bb\'f3\'c0\'c7
-\f0  rear(
-\f1 \'b5\'da
-\f0 ) 
-\f1 \'c0\'ce\'b5\'a6\'bd\'ba
-\f0 ",\
-    exp:"_front
-\f1 \'b4\'c2
-\f0  
-\f1 \'c3\'b9
-\f0  
-\f1 \'bf\'f8\'bc\'d2
-\f0  
-\f1 \'c0\'ce\'b5\'a6\'bd\'ba
-\f0 , _size
-\f1 \'b4\'c2
-\f0  
-\f1 \'c7\'f6\'c0\'e7
-\f0  
-\f1 \'bf\'f8\'bc\'d2
-\f0  
-\f1 \'bc\'f6
-\f0 . _front + _size = 
-\f1 \'b4\'d9\'c0\'bd
-\f0  
-\f1 \'bb\'f0\'c0\'d4
-\f0  
-\f1 \'c0\'a7\'c4\'a1
-\f0 . %
-\f1 \'b7\'ce
-\f0  
-\f1 \'bc\'f8\'c8\'af
-\f0  
-\f1 \'b9\'e8\'bf\'ad\'bf\'a1\'bc\'ad
-\f0  
-\f1 \'bf\'c3\'b9\'d9\'b8\'a5
-\f0  
-\f1 \'c0\'ce\'b5\'a6\'bd\'ba\'b8\'a6
-\f0  
-\f1 \'b1\'b8\'c7\'d5\'b4\'cf\'b4\'d9
-\f0 . 
-\f1 \'bf\'b9
-\f0 : _front=3, _size=4, len=10 
-\f2 \uc0\u8594 
-\f0  avail=(3+4)%10=7." \},\
-  \{ id:15, type:"Multiple Choice", topic:"Deque ADT",\
-    q:"Which of the following is NOT a standard operation of the Deque (Double-Ended Queue) ADT?",\
-    opts:["add_first(object)","delete_last()","peek_middle()","last()"], ans:"peek_middle()",\
-    exp:"Deque
-\f1 \'c0\'c7
-\f0  
-\f1 \'c7\'a5\'c1\'d8
-\f0  
-\f1 \'bf\'ac\'bb\'ea\'c0\'ba
-\f0  
-\f1 \'be\'e7\'c2\'ca
-\f0  
-\f1 \'b3\'a1\'bf\'a1\'bc\'ad\'b8\'b8
-\f0  
-\f1 \'c0\'cc\'b7\'e7\'be\'ee\'c1\'fd\'b4\'cf\'b4\'d9
-\f0 :\\nadd_first / add_last / delete_first / delete_last / first() / last()\\npeek_middle()
-\f1 \'c0\'ba
-\f0  
-\f1 \'c1\'df\'b0\'a3
-\f0  
-\f1 \'bf\'f8\'bc\'d2
-\f0  
-\f1 \'c1\'b6\'c8\'b8\'b7\'ce
-\f0  Deque ADT
-\f1 \'c0\'c7
-\f0  
-\f1 \'c7\'a5\'c1\'d8
-\f0  
-\f1 \'bf\'ac\'bb\'ea\'c0\'cc
-\f0  
-\f1 \'be\'c6\'b4\'d5\'b4\'cf\'b4\'d9
-\f0 ." \},\
-  \{ id:16, type:"Programming", topic:"Spans Algorithm",\
-    q:"In spans2 (O(n) algorithm), why is the while-loop inside the for-loop NOT making the overall complexity O(n\'b2)? Explain using push/pop counts.",\
-    ans:"
-\f1 \'b0\'a2
-\f0  
-\f1 \'c0\'ce\'b5\'a6\'bd\'ba\'b4\'c2
-\f0  
-\f1 \'c1\'a4\'c8\'ae\'c8\'f7
-\f0  1
-\f1 \'b9\'f8
-\f0  push, 
-\f1 \'c3\'d6\'b4\'eb
-\f0  1
-\f1 \'b9\'f8
-\f0  pop 
-\f2 \uc0\u8594 
-\f0  
-\f1 \'c3\'d1
-\f0  
-\f1 \'bd\'ba\'c5\'c3
-\f0  
-\f1 \'bf\'ac\'bb\'ea
-\f0  \uc0\u8804  2n = O(n)",\
-    exp:"spans2
-\f1 \'bf\'a1\'bc\'ad
-\f0  
-\f1 \'c0\'ce\'b5\'a6\'bd\'ba
-\f0  i
-\f1 \'b4\'c2
-\f0  
-\f1 \'c7\'d7\'bb\'f3
-\f0  
-\f1 \'c1\'a4\'c8\'ae\'c8\'f7
-\f0  1
-\f1 \'b9\'f8
-\f0  push
-\f1 \'b5\'cb\'b4\'cf\'b4\'d9
-\f0 . while 
-\f1 \'b7\'e7\'c7\'c1\'bf\'a1\'bc\'ad
-\f0  pop
-\f1 \'b5\'c7\'b4\'f5\'b6\'f3\'b5\'b5
-\f0  
-\f1 \'c7\'d1
-\f0  
-\f1 \'b9\'f8
-\f0  pop
-\f1 \'b5\'c8
-\f0  
-\f1 \'c0\'ce\'b5\'a6\'bd\'ba\'b4\'c2
-\f0  
-\f1 \'b4\'d9\'bd\'c3
-\f0  push
-\f1 \'b5\'c7\'c1\'f6
-\f0  
-\f1 \'be\'ca\'bd\'c0\'b4\'cf\'b4\'d9
-\f0 . 
-\f1 \'b5\'fb\'b6\'f3\'bc\'ad
-\f0  
-\f1 \'c3\'d1
-\f0  push 
-\f1 \'c8\'bd\'bc\'f6
-\f0 =n, pop 
-\f1 \'c8\'bd\'bc\'f6
-\f0 \uc0\u8804 n 
-\f2 \uc0\u8594 
-\f0  
-\f1 \'c0\'fc\'c3\'bc
-\f0  
-\f1 \'bd\'ba\'c5\'c3
-\f0  
-\f1 \'bf\'ac\'bb\'ea
-\f0 \uc0\u8804 2n=O(n). while
-\f1 \'c0\'cc
-\f0  
-\f1 \'c1\'df\'c3\'b8\'b5\'c7\'be\'ee
-\f0  
-\f1 \'c0\'d6\'be\'ee\'b5\'b5
-\f0  O(n\'b2)
-\f1 \'c0\'cc
-\f0  
-\f1 \'be\'c6\'b4\'d1
-\f0  
-\f1 \'c0\'cc\'c0\'af\'b0\'a1
-\f0  
-\f1 \'b9\'d9\'b7\'ce
-\f0  
-\f1 \'c0\'cc\'b0\'cd
-\f0 (
-\f1 \'bb\'f3\'b0\'a2
-\f0  
-\f1 \'ba\'d0\'bc\'ae
-\f0 , amortized analysis)
-\f1 \'c0\'d4\'b4\'cf\'b4\'d9
-\f0 ." \},\
-  \{ id:17, type:"Draw", topic:"Spans",\
-    q:"Given X = [3, 1, 4, 2, 5], compute the span array S where S[i] = count of consecutive preceding elements \uc0\u8804  X[i], including X[i] itself.",\
-    ans:"S = [1, 1, 3, 1, 5]",\
-    exp:"S[0]: X[0]=3, 
-\f1 \'be\'d5
-\f0  
-\f1 \'be\'f8\'c0\'bd
-\f0  
-\f2 \uc0\u8594 
-\f0  1\\nS[1]: X[1]=1, X[0]=3>1 
-\f2 \uc0\u8594 
-\f0  1\\nS[2]: X[2]=4, X[1]=1\uc0\u8804 4, X[0]=3\u8804 4 
-\f2 \uc0\u8594 
-\f0  2+1=3\\nS[3]: X[3]=2, X[2]=4>2 
-\f2 \uc0\u8594 
-\f0  1\\nS[4]: X[4]=5, X[3]=2, X[2]=4, X[1]=1, X[0]=3 
-\f1 \'b8\'f0\'b5\'ce
-\f0  \uc0\u8804 5 
-\f2 \uc0\u8594 
-\f0  4+1=5" \},\
-  \{ id:18, type:"True/False", topic:"Stack \'96 Postfix",\
-    q:"To evaluate a postfix expression, when an operator is encountered, exactly two operands are popped from the stack, the operation is performed, and the result is pushed back.",\
-    ans:"True",\
-    exp:"Postfix 
-\f1 \'c6\'f2\'b0\'a1
-\f0  
-\f1 \'be\'cb\'b0\'ed\'b8\'ae\'c1\'f2
-\f0 :\\n1. 
-\f1 \'c7\'c7\'bf\'ac\'bb\'ea\'c0\'da
-\f0  
-\f2 \uc0\u8594 
-\f0  
-\f1 \'bd\'ba\'c5\'c3\'bf\'a1
-\f0  push\\n2. 
-\f1 \'bf\'ac\'bb\'ea\'c0\'da
-\f0  
-\f2 \uc0\u8594 
-\f0  
-\f1 \'bd\'ba\'c5\'c3\'bf\'a1\'bc\'ad
-\f0  2
-\f1 \'b0\'b3
-\f0  pop 
-\f2 \uc0\u8594 
-\f0  
-\f1 \'bf\'ac\'bb\'ea
-\f0  
-\f2 \uc0\u8594 
-\f0  
-\f1 \'b0\'e1\'b0\'fa
-\f0  push\\n
-\f1 \'c0\'cc\'c1\'f8
-\f0  
-\f1 \'bf\'ac\'bb\'ea\'c0\'da\'b4\'c2
-\f0  
-\f1 \'c7\'c7\'bf\'ac\'bb\'ea\'c0\'da
-\f0  2
-\f1 \'b0\'b3\'b0\'a1
-\f0  
-\f1 \'c7\'ca\'bf\'e4\'c7\'cf\'b9\'c7\'b7\'ce
-\f0  
-\f1 \'c1\'a4\'c8\'ae\'c8\'f7
-\f0  2
-\f1 \'b0\'b3
-\f0  pop. 
-\f1 \'bf\'b9
-\f0 : '3 4 + 2 *' 
-\f2 \uc0\u8594 
-\f0  push3, push4, pop
-\f2 \uc0\u8594 
-\f0 3+4=7 push, push2, pop
-\f2 \uc0\u8594 
-\f0 7*2=14 push 
-\f2 \uc0\u8594 
-\f0  
-\f1 \'b0\'e1\'b0\'fa
-\f0 14" \},\
-  \{ id:19, type:"Multiple Choice", topic:"Round Robin",\
-    q:"A Round Robin Scheduler uses a Queue [P1, P2, P3] (P1 at front). What is the queue state after P1 is serviced once?",\
-    opts:["[P1, P2, P3]","[P2, P3, P1]","[P3, P2, P1]","[P1, P3, P2]"], ans:"[P2, P3, P1]",\
-    exp:"Round Robin 
-\f1 \'b5\'bf\'c0\'db
-\f0 :\\n1. e = Q.dequeue() 
-\f2 \uc0\u8594 
-\f0  P1 
-\f1 \'c1\'a6\'b0\'c5
-\f0  
-\f2 \uc0\u8594 
-\f0  
-\f1 \'c5\'a5
-\f0 : [P2, P3]\\n2. P1 
-\f1 \'bc\'ad\'ba\'f1\'bd\'ba
-\f0  
-\f1 \'bd\'c7\'c7\'e0
-\f0 \\n3. Q.enqueue(P1) 
-\f2 \uc0\u8594 
-\f0  P1
-\f1 \'c0\'bb
-\f0  rear
-\f1 \'bf\'a1
-\f0  
-\f1 \'c3\'df\'b0\'a1
-\f0  
-\f2 \uc0\u8594 
-\f0  
-\f1 \'c5\'a5
-\f0 : [P2, P3, P1]\\nQueue
-\f1 \'c0\'c7
-\f0  FIFO 
-\f1 \'c6\'af\'bc\'ba\'c0\'cc
-\f0  
-\f1 \'bc\'f8\'bc\'ad\'b8\'a6
-\f0  
-\f1 \'ba\'b8\'c0\'e5\'c7\'d5\'b4\'cf\'b4\'d9
-\f0 ." \},\
-  \{ id:20, type:"Programming", topic:"HTML Tag Matching",\
-    q:"In is_matched_html(), what does `tag[1:] != S.pop()` check, and what does the function return when this condition is True?",\
-    ans:"
-\f1 \'b4\'dd\'b4\'c2
-\f0  
-\f1 \'c5\'c2\'b1\'d7
-\f0  
-\f1 \'c0\'cc\'b8\'a7\'c0\'cc
-\f0  
-\f1 \'b0\'a1\'c0\'e5
-\f0  
-\f1 \'c3\'d6\'b1\'d9
-\f0  
-\f1 \'bf\'a9\'b4\'c2
-\f0  
-\f1 \'c5\'c2\'b1\'d7\'bf\'cd
-\f0  
-\f1 \'b4\'d9\'b8\'a5\'c1\'f6
-\f0  
-\f1 \'c8\'ae\'c0\'ce
-\f0  
-\f2 \uc0\u8594 
-\f0  False 
-\f1 \'b9\'dd\'c8\'af
-\f0  (mismatch)",\
-    exp:"HTML 
-\f1 \'c5\'c2\'b1\'d7
-\f0  
-\f1 \'b8\'c5\'c4\'aa\'bf\'a1\'bc\'ad
-\f0 :\\n- 
-\f1 \'bf\'a9\'b4\'c2
-\f0  
-\f1 \'c5\'c2\'b1\'d7
-\f0  
-\f1 \'bf\'b9
-\f0 : 'body' 
-\f2 \uc0\u8594 
-\f0  push('body')\\n- 
-\f1 \'b4\'dd\'b4\'c2
-\f0  
-\f1 \'c5\'c2\'b1\'d7
-\f0  
-\f1 \'bf\'b9
-\f0 : '/body' 
-\f2 \uc0\u8594 
-\f0  tag[1:]='body'\\n- S.pop()
-\f1 \'c0\'b8\'b7\'ce
-\f0  
-\f1 \'c3\'d6\'b1\'d9
-\f0  
-\f1 \'bf\'a9\'b4\'c2
-\f0  
-\f1 \'c5\'c2\'b1\'d7\'bf\'cd
-\f0  
-\f1 \'ba\'f1\'b1\'b3
-\f0 \\n- 
-\f1 \'b4\'d9\'b8\'a3\'b8\'e9
-\f0 (
-\f1 \'bf\'b9
-\f0 : div 
-\f1 \'bf\'ad\'b0\'ed
-\f0  span
-\f1 \'c0\'b8\'b7\'ce
-\f0  
-\f1 \'b4\'dd\'c0\'b8\'b8\'e9
-\f0 ) 
-\f2 \uc0\u8594 
-\f0  False\\n
-\f1 \'bf\'c3\'b9\'d9\'b8\'a5
-\f0  HTML
-\f1 \'c0\'ba
-\f0  
-\f1 \'b0\'a1\'c0\'e5
-\f0  
-\f1 \'c3\'d6\'b1\'d9\'bf\'a1
-\f0  
-\f1 \'bf\'ad\'b8\'b0
-\f0  
-\f1 \'c5\'c2\'b1\'d7\'b0\'a1
-\f0  
-\f1 \'b0\'a1\'c0\'e5
-\f0  
-\f1 \'b8\'d5\'c0\'fa
-\f0  
-\f1 \'b4\'dd\'c7\'f4\'be\'df
-\f0  
-\f1 \'c7\'d5\'b4\'cf\'b4\'d9
-\f0 (LIFO 
-\f1 \'c6\'af\'bc\'ba
-\f0 )." \},\
-];\
-\
-const types = ["All", ...Object.keys(BADGE)];\
-let activeType = "All";\
-let selected = \{\};\
-let revealed = \{\};\
-\
-function render() \{\
-  const filtered = activeType === "All" ? QS : QS.filter(q => q.type === activeType);\
-  document.getElementById("footer").textContent = `
-\f1 \'c3\'d1
-\f0  $\{filtered.length\}
-\f1 \'b9\'ae\'c1\'a6
-\f0 `;\
-\
-  // filters\
-  const fEl = document.getElementById("filters");\
-  fEl.innerHTML = "";\
-  types.forEach(t => \{\
-    const b = document.createElement("button");\
-    b.className = "filter-btn" + (activeType === t ? " active" : "");\
-    b.textContent = t;\
-    b.onclick = () => \{ activeType = t; render(); \};\
-    fEl.appendChild(b);\
-  \});\
-\
-  // questions\
-  const ql = document.getElementById("qlist");\
-  ql.innerHTML = "";\
-  filtered.forEach((q, fi) => \{\
-    const globalIdx = QS.indexOf(q);\
-    const card = document.createElement("div");\
-    card.className = "card";\
-\
-    const c = BADGE[q.type];\
-    const badgeStyle = `background:$\{c.bg\};color:$\{c.text\};border:1px solid $\{c.bd\}`;\
-\
-    let optsHtml = "";\
-    if (q.opts) \{\
-      optsHtml = `<div class="options">` + q.opts.map(o => \{\
-        let cls = "opt";\
-        if (revealed[globalIdx]) \{\
-          if (o === q.ans) cls += " correct";\
-          else if (selected[globalIdx] === o) cls += " wrong";\
-        \} else if (selected[globalIdx] === o) cls += " selected";\
-        return `<button class="$\{cls\}" data-qi="$\{globalIdx\}" data-opt="$\{o\}">$\{o\}</button>`;\
-      \}).join("") + `</div>`;\
-    \}\
-\
-    const revLabel = revealed[globalIdx] ? "
-\f1 \'b4\'e4
-\f0  
-\f1 \'bc\'fb\'b1\'e2\'b1\'e2
-\f0  
-\f1 \'a1\'e3
-\f0 " : "
-\f1 \'c1\'a4\'b4\'e4
-\f0  & 
-\f1 \'c7\'d8\'bc\'b3
-\f0  
-\f1 \'ba\'b8\'b1\'e2
-\f0  
-\f2 \uc0\u9660 
-\f0 ";\
-    const ansShow = revealed[globalIdx] ? "answer-box show" : "answer-box";\
-\
-    card.innerHTML = `\
-      <div class="card-head">\
-        <div class="meta">\
-          <span class="qnum">Q$\{globalIdx + 1\}</span>\
-          <span class="badge" style="$\{badgeStyle\}">$\{q.type\}</span>\
-          <span class="topic">$\{q.topic\}</span>\
-        </div>\
-        <p class="qtext">$\{q.q\}</p>\
-        $\{optsHtml\}\
-        <button class="reveal-btn" data-qi="$\{globalIdx\}">$\{revLabel\}</button>\
-      </div>\
-      <div class="$\{ansShow\}" id="ans-$\{globalIdx\}">\
-        <div class="ans-label">\
-          <span>
-\f1 \'c1\'a4\'b4\'e4
-\f0 : </span><span>$\{q.ans\}</span>\
-        </div>\
-        <p class="explanation">$\{q.exp\}</p>\
-      </div>`;\
-\
-    ql.appendChild(card);\
-  \});\
-\
-  // event delegation\
-  ql.querySelectorAll(".opt").forEach(b => \{\
-    b.onclick = () => \{\
-      const qi = +b.dataset.qi;\
-      selected[qi] = b.dataset.opt;\
-      render();\
-    \};\
-  \});\
-  ql.querySelectorAll(".reveal-btn").forEach(b => \{\
-    b.onclick = () => \{\
-      const qi = +b.dataset.qi;\
-      revealed[qi] = !revealed[qi];\
-      render();\
-    \};\
-  \});\
-\}\
-\
-render();\
-</script>\
-</body>\
-</html>}
+  .filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 24px; }
+  .filter-btn { padding: 4px 12px; border-radius: 20px; font-size: 12px;
+    border: 1px solid var(--border); background: var(--card);
+    color: var(--muted); cursor: pointer; }
+  .filter-btn.active { background: var(--text); color: #fff; border-color: var(--text); }
+
+  .card { background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; margin-bottom: 14px; overflow: hidden; }
+  .card-head { padding: 16px 18px; }
+  .meta { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+  .qnum { font-size: 12px; color: var(--hint); margin-right: 2px; }
+  .badge { display: inline-block; font-size: 11px; font-weight: 500;
+    padding: 2px 9px; border-radius: 20px; }
+  .topic { font-size: 11px; padding: 2px 8px; border-radius: 20px;
+    background: var(--bg); color: var(--muted); border: 1px solid var(--border); }
+  .qtext { font-size: 14px; line-height: 1.65; white-space: pre-line; }
+
+  .options { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+  .opt { text-align: left; padding: 7px 12px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--card);
+    color: var(--text); cursor: pointer; font-size: 13px;
+    font-family: inherit; transition: background .15s; }
+  .opt:hover { background: var(--bg); }
+  .opt.correct { background: var(--green-bg); border-color: var(--green-bd); color: var(--green-text); }
+  .opt.wrong   { background: var(--red-bg);   border-color: var(--red-bd);   color: var(--red-text); }
+  .opt.selected { background: var(--blue-bg); border-color: var(--blue-bd); }
+
+  .reveal-btn { margin-top: 12px; padding: 6px 14px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--card);
+    color: var(--muted); cursor: pointer; font-size: 13px; font-family: inherit; }
+  .reveal-btn:hover { background: var(--bg); }
+
+  .answer-box { padding: 14px 18px; border-top: 1px solid var(--border); display: none; }
+  .answer-box.show { display: block; }
+  .ans-label { padding: 7px 12px; border-radius: 8px; margin-bottom: 10px;
+    background: var(--green-bg); border: 1px solid var(--green-bd); }
+  .ans-label span:first-child { font-size: 12px; font-weight: 600; color: var(--green-text); }
+  .ans-label span:last-child  { font-size: 13px; font-weight: 600; color: var(--green-text); }
+  .explanation { font-size: 13px; line-height: 1.8; white-space: pre-line; color: var(--muted); }
+
+  .footer { text-align: center; font-size: 12px; color: var(--hint); margin-top: 8px; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>CSE203 Week 4 – Practice Exam</h1>
+  <p class="sub">Linear Structures: List · Stack · Queue · Deque &nbsp;|&nbsp; 20 questions</p>
+
+  <div class="filters" id="filters"></div>
+  <div id="qlist"></div>
+  <p class="footer" id="footer"></p>
+</div>
+
+<script>
+const BADGE = {
+  "True/False":        { bg:"#e1f5ee", text:"#085041", bd:"#5dcaa5" },
+  "Multiple Choice":   { bg:"#e6f1fb", text:"#185fa5", bd:"#378add" },
+  "Fill-in-the-blank": { bg:"#faeeda", text:"#854f0b", bd:"#ef9f27" },
+  "Programming":       { bg:"#eeedfe", text:"#534ab7", bd:"#7f77dd" },
+  "Draw":              { bg:"#faece7", text:"#993c1d", bd:"#d85a30" },
+};
+
+const QS = [
+  { id:1, type:"True/False", topic:"Array / Memory",
+    q:"In Python, a list stores actual object values directly inside the array, similar to a compact array using the array module.",
+    ans:"False",
+    exp:"파이썬의 list는 객체(object)에 대한 참조(reference, 포인터)를 배열에 저장합니다. 실제 값을 직접 저장하는 것은 compact array(array 모듈 사용 시)입니다. 그래서 list는 int, str, 어떤 객체든 담을 수 있지만, array 모듈은 지정된 타입 코드('i', 'd' 등)의 원시값만 저장합니다." },
+  { id:2, type:"True/False", topic:"Array Complexity",
+    q:"In a Python list, both data.append(value) and data.insert(0, value) have the same amortized time complexity.",
+    ans:"False",
+    exp:"append()는 리스트 끝에 추가하므로 상각(amortized) O(1)입니다(doubling 전략). 반면 insert(0, value)는 모든 기존 원소를 한 칸씩 오른쪽으로 밀어야 하므로 O(n)입니다. 가장 비용이 많이 드는 연산은 맨 앞에 삽입하는 경우입니다." },
+  { id:3, type:"Multiple Choice", topic:"Amortized Analysis",
+    q:"When using the doubling strategy for a dynamic array, what is the amortized time complexity of a single add(o) operation?",
+    opts:["O(log n)","O(n)","O(1)","O(n²)"], ans:"O(1)",
+    exp:"Doubling 전략에서는 배열이 꽉 찰 때마다 크기를 2배로 늘립니다. n번의 add 연산에 걸리는 총 시간 T(n)은 n + 1 + 2 + 4 + … + 2^k = 3n - 1 = O(n)입니다. 따라서 연산 1회당 평균(상각, amortized) 시간은 O(n)/n = O(1)이 됩니다." },
+  { id:4, type:"Fill-in-the-blank", topic:"Incremental Strategy",
+    q:"When using the incremental strategy (increase by constant c), the amortized time of add is O(___), and the total time T(n) is O(___).",
+    ans:"O(n) / O(n²)",
+    exp:"Incremental 전략(상수 c씩 증가)으로 k = n/c번 복사가 일어납니다. 총 비용 T(n) = n + c(1+2+…+k) = n + ck(k+1)/2 ≈ O(n²)입니다. 따라서 상각 시간은 T(n)/n = O(n)이 됩니다. Doubling의 O(1)보다 훨씬 비효율적입니다." },
+  { id:5, type:"True/False", topic:"List vs Tuple",
+    q:"In Python, both list and tuple support O(1) indexing (e.g., data[j]) because they are stored as arrays.",
+    ans:"True",
+    exp:"list와 tuple 모두 내부적으로 배열(array)로 저장됩니다. 배열은 연속된 메모리 위치를 사용하기 때문에 인덱스 j로 직접 접근(data[j])하는 것이 O(1)입니다. 메모리 시작 주소 + j × 원소크기로 바로 계산할 수 있기 때문입니다." },
+  { id:6, type:"Fill-in-the-blank", topic:"Compact Array",
+    q:"To create a compact array of signed integers in Python using the array module, you write:\nprimes = array('___', [2, 3, 5, 7])",
+    ans:"'i'",
+    exp:"Python array 모듈에서 type code 'i'는 signed int(C의 int, 최소 2바이트)를 의미합니다. 기타 주요 코드: 'b'=signed char(1B), 'd'=double(8B), 'f'=float(4B), 'l'=signed long(4B). type code는 저장할 데이터 타입을 명시합니다." },
+  { id:7, type:"True/False", topic:"Three-way Disjointness",
+    q:"The function disjoint2 (which checks if a==b before iterating over C) runs in O(n²) time, assuming no individual sequence contains duplicate values.",
+    ans:"True",
+    exp:"disjoint2에서 a==b인 경우만 C를 순회합니다. 중복값이 없다는 가정 하에, a==b가 성립하는 경우는 최대 N번(각 값이 한 번씩만 등장)입니다. 따라서 outer loop O(n²) + inner loop 최대 n번으로 전체 O(n²)입니다." },
+  { id:8, type:"Programming", topic:"Stack ADT",
+    q:"Complete the ArrayStack pop() method:\n\ndef pop(self):\n    if self.is_empty():\n        raise Empty('Stack is empty')\n    return self._data.___( )",
+    ans:"self._data.pop()",
+    exp:"Stack은 LIFO(Last In First Out) 구조로, 가장 최근에 삽입된 원소를 제거합니다. 내부적으로 Python list를 사용하므로 list의 pop()을 호출합니다. pop()은 인수 없이 호출하면 리스트의 마지막 원소를 제거하고 반환합니다. 이것이 Stack의 top 원소에 해당합니다." },
+  { id:9, type:"Draw", topic:"Stack Operations",
+    q:"Given an empty stack S, execute in order and write the final stack (bottom→top):\nS.push(5) → S.push(3) → S.pop() → S.push(7) → S.push(9) → S.pop() → S.push(4)",
+    ans:"[5, 7, 4]  (bottom → top)",
+    exp:"단계별 추적:\n1. push(5) → [5]\n2. push(3) → [5, 3]\n3. pop() → 3 제거 → [5]\n4. push(7) → [5, 7]\n5. push(9) → [5, 7, 9]\n6. pop() → 9 제거 → [5, 7]\n7. push(4) → [5, 7, 4]\n최종: bottom=5, top=4" },
+  { id:10, type:"True/False", topic:"Stack Application",
+    q:"The parentheses matching algorithm returns True when S.is_empty() is True at the end, meaning all opening symbols were successfully matched.",
+    ans:"True",
+    exp:"괄호 매칭 알고리즘(ParenMatch)에서 여는 괄호는 스택에 push, 닫는 괄호가 나오면 pop하여 대응 여부 확인. 마지막에 스택이 비어있다(is_empty()==True)면 모든 여는 괄호가 짝을 찾았다는 의미로 True를 반환합니다." },
+  { id:11, type:"Multiple Choice", topic:"Infix/Postfix",
+    q:"What is the correct postfix form of the infix expression: (1 + 2) * 3?",
+    opts:["1 2 + 3 *","1 2 3 + *","* + 1 2 3","1 + 2 3 *"], ans:"1 2 + 3 *",
+    exp:"(1+2)*3 → Postfix 변환:\n- 피연산자 순서대로: 1, 2 출력\n- 괄호 닫히면 + 출력: 1 2 +\n- 마지막 * 출력: 1 2 + 3 *\n평가: 스택에 1,2 push → + pop 2개 → 3 push → push 3 → * pop 2개 → 9" },
+  { id:12, type:"Programming", topic:"Queue ADT",
+    q:"In ArrayQueue.dequeue(), why is the modulo (%) operator used?\n\nself._front = (self._front + 1) % len(self._data)",
+    ans:"Circular array (순환 배열) 구현 — 인덱스가 끝에 도달하면 0으로 wrap around",
+    exp:"단순히 _front를 증가시키면 배열 끝에 도달 후 앞부분 공간이 낭비됩니다. %를 사용하면 인덱스가 배열 끝을 넘을 때 자동으로 0으로 돌아옵니다. 예: _front=9, len=10 → (9+1)%10=0. 이로써 배열 공간을 효율적으로 재사용합니다." },
+  { id:13, type:"True/False", topic:"Queue ADT",
+    q:"In the Queue ADT, enqueue() adds an element at the front, and dequeue() removes an element from the rear.",
+    ans:"False",
+    exp:"Queue는 FIFO(First In First Out) 구조입니다. enqueue()는 rear(뒤)에 추가하고, dequeue()는 front(앞)에서 제거합니다. ATM 줄 서기를 생각하면 됩니다: 새로운 사람은 줄 끝에(enqueue at rear), 서비스는 맨 앞에서(dequeue from front)." },
+  { id:14, type:"Fill-in-the-blank", topic:"Queue Implementation",
+    q:"In ArrayQueue.enqueue(), the rear slot index is:\navail = (self._front + self._size) % len(self._data)\nWhat does this formula compute?",
+    ans:"다음 원소를 삽입할 순환 배열 상의 rear(뒤) 인덱스",
+    exp:"_front는 첫 원소 인덱스, _size는 현재 원소 수. _front + _size = 다음 삽입 위치. %로 순환 배열에서 올바른 인덱스를 구합니다. 예: _front=3, _size=4, len=10 → avail=(3+4)%10=7." },
+  { id:15, type:"Multiple Choice", topic:"Deque ADT",
+    q:"Which of the following is NOT a standard operation of the Deque (Double-Ended Queue) ADT?",
+    opts:["add_first(object)","delete_last()","peek_middle()","last()"], ans:"peek_middle()",
+    exp:"Deque의 표준 연산은 양쪽 끝에서만 이루어집니다:\nadd_first / add_last / delete_first / delete_last / first() / last()\npeek_middle()은 중간 원소 조회로 Deque ADT의 표준 연산이 아닙니다." },
+  { id:16, type:"Programming", topic:"Spans Algorithm",
+    q:"In spans2 (O(n) algorithm), why is the while-loop inside the for-loop NOT making the overall complexity O(n²)? Explain using push/pop counts.",
+    ans:"각 인덱스는 정확히 1번 push, 최대 1번 pop → 총 스택 연산 ≤ 2n = O(n)",
+    exp:"spans2에서 인덱스 i는 항상 정확히 1번 push됩니다. while 루프에서 pop되더라도 한 번 pop된 인덱스는 다시 push되지 않습니다. 따라서 총 push 횟수=n, pop 횟수≤n → 전체 스택 연산≤2n=O(n). while이 중첩되어 있어도 O(n²)이 아닌 이유가 바로 이것(상각 분석, amortized analysis)입니다." },
+  { id:17, type:"Draw", topic:"Spans",
+    q:"Given X = [3, 1, 4, 2, 5], compute the span array S where S[i] = count of consecutive preceding elements ≤ X[i], including X[i] itself.",
+    ans:"S = [1, 1, 3, 1, 5]",
+    exp:"S[0]: X[0]=3, 앞 없음 → 1\nS[1]: X[1]=1, X[0]=3>1 → 1\nS[2]: X[2]=4, X[1]=1≤4, X[0]=3≤4 → 2+1=3\nS[3]: X[3]=2, X[2]=4>2 → 1\nS[4]: X[4]=5, X[3]=2, X[2]=4, X[1]=1, X[0]=3 모두 ≤5 → 4+1=5" },
+  { id:18, type:"True/False", topic:"Stack – Postfix",
+    q:"To evaluate a postfix expression, when an operator is encountered, exactly two operands are popped from the stack, the operation is performed, and the result is pushed back.",
+    ans:"True",
+    exp:"Postfix 평가 알고리즘:\n1. 피연산자 → 스택에 push\n2. 연산자 → 스택에서 2개 pop → 연산 → 결과 push\n이진 연산자는 피연산자 2개가 필요하므로 정확히 2개 pop. 예: '3 4 + 2 *' → push3, push4, pop→3+4=7 push, push2, pop→7*2=14 push → 결과14" },
+  { id:19, type:"Multiple Choice", topic:"Round Robin",
+    q:"A Round Robin Scheduler uses a Queue [P1, P2, P3] (P1 at front). What is the queue state after P1 is serviced once?",
+    opts:["[P1, P2, P3]","[P2, P3, P1]","[P3, P2, P1]","[P1, P3, P2]"], ans:"[P2, P3, P1]",
+    exp:"Round Robin 동작:\n1. e = Q.dequeue() → P1 제거 → 큐: [P2, P3]\n2. P1 서비스 실행\n3. Q.enqueue(P1) → P1을 rear에 추가 → 큐: [P2, P3, P1]\nQueue의 FIFO 특성이 순서를 보장합니다." },
+  { id:20, type:"Programming", topic:"HTML Tag Matching",
+    q:"In is_matched_html(), what does `tag[1:] != S.pop()` check, and what does the function return when this condition is True?",
+    ans:"닫는 태그 이름이 가장 최근 여는 태그와 다른지 확인 → False 반환 (mismatch)",
+    exp:"HTML 태그 매칭에서:\n- 여는 태그 예: 'body' → push('body')\n- 닫는 태그 예: '/body' → tag[1:]='body'\n- S.pop()으로 최근 여는 태그와 비교\n- 다르면(예: div 열고 span으로 닫으면) → False\n올바른 HTML은 가장 최근에 열린 태그가 가장 먼저 닫혀야 합니다(LIFO 특성)." },
+];
+
+const types = ["All", ...Object.keys(BADGE)];
+let activeType = "All";
+let selected = {};
+let revealed = {};
+
+function render() {
+  const filtered = activeType === "All" ? QS : QS.filter(q => q.type === activeType);
+  document.getElementById("footer").textContent = `총 ${filtered.length}문제`;
+
+  // filters
+  const fEl = document.getElementById("filters");
+  fEl.innerHTML = "";
+  types.forEach(t => {
+    const b = document.createElement("button");
+    b.className = "filter-btn" + (activeType === t ? " active" : "");
+    b.textContent = t;
+    b.onclick = () => { activeType = t; render(); };
+    fEl.appendChild(b);
+  });
+
+  // questions
+  const ql = document.getElementById("qlist");
+  ql.innerHTML = "";
+  filtered.forEach((q, fi) => {
+    const globalIdx = QS.indexOf(q);
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const c = BADGE[q.type];
+    const badgeStyle = `background:${c.bg};color:${c.text};border:1px solid ${c.bd}`;
+
+    let optsHtml = "";
+    if (q.opts) {
+      optsHtml = `<div class="options">` + q.opts.map(o => {
+        let cls = "opt";
+        if (revealed[globalIdx]) {
+          if (o === q.ans) cls += " correct";
+          else if (selected[globalIdx] === o) cls += " wrong";
+        } else if (selected[globalIdx] === o) cls += " selected";
+        return `<button class="${cls}" data-qi="${globalIdx}" data-opt="${o}">${o}</button>`;
+      }).join("") + `</div>`;
+    }
+
+    const revLabel = revealed[globalIdx] ? "답 숨기기 ▲" : "정답 & 해설 보기 ▼";
+    const ansShow = revealed[globalIdx] ? "answer-box show" : "answer-box";
+
+    card.innerHTML = `
+      <div class="card-head">
+        <div class="meta">
+          <span class="qnum">Q${globalIdx + 1}</span>
+          <span class="badge" style="${badgeStyle}">${q.type}</span>
+          <span class="topic">${q.topic}</span>
+        </div>
+        <p class="qtext">${q.q}</p>
+        ${optsHtml}
+        <button class="reveal-btn" data-qi="${globalIdx}">${revLabel}</button>
+      </div>
+      <div class="${ansShow}" id="ans-${globalIdx}">
+        <div class="ans-label">
+          <span>정답: </span><span>${q.ans}</span>
+        </div>
+        <p class="explanation">${q.exp}</p>
+      </div>`;
+
+    ql.appendChild(card);
+  });
+
+  // event delegation
+  ql.querySelectorAll(".opt").forEach(b => {
+    b.onclick = () => {
+      const qi = +b.dataset.qi;
+      selected[qi] = b.dataset.opt;
+      render();
+    };
+  });
+  ql.querySelectorAll(".reveal-btn").forEach(b => {
+    b.onclick = () => {
+      const qi = +b.dataset.qi;
+      revealed[qi] = !revealed[qi];
+      render();
+    };
+  });
+}
+
+render();
+</script>
+</body>
+</html>
